@@ -1,2 +1,2 @@
-# ASP-NET-Vue
+# ASP.NET Vue Skeleton
 Minimalistic ASP.NET Vue Web App
