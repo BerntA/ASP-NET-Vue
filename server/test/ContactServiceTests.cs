@@ -23,6 +23,8 @@ public class ContactServiceTests
     [Fact]
     public async Task GetContactsTest()
     {
+        await _contactService.RemoveAll();
+
         var items = await _contactService.Contacts();
         Assert.Empty(items);
 
@@ -35,25 +37,31 @@ public class ContactServiceTests
     [Fact]
     public async Task AddContactTest()
     {
-        var id = await _contactService.AddContact(_entry);
-        Assert.NotEqual(Guid.Empty, id);
+        await _contactService.RemoveAll();
+        var contact = await _contactService.AddContact(_entry);
+        Assert.NotNull(contact);
+        Assert.NotEqual(Guid.Empty, contact.Id);
     }
 
     [Fact]
     public async Task UpdateContactTest()
     {
-        Assert.False(await _contactService.UpdateContact(_entry));
+        await _contactService.RemoveAll();
+        Assert.Null(await _contactService.UpdateContact(_entry));
 
-        var id = await _contactService.AddContact(_entry);
-        _entry.Id = id;
+        var contact = await _contactService.AddContact(_entry);
+        Assert.NotNull(contact);
+        _entry.Id = contact.Id;
 
-        Assert.True(await _contactService.UpdateContact(_entry));
+        Assert.NotNull(await _contactService.UpdateContact(_entry));
     }
 
     [Fact]
     public async Task RemoveContactTest()
     {
-        var id = await _contactService.AddContact(_entry);
-        Assert.True(await _contactService.RemoveContact(id));
+        await _contactService.RemoveAll();
+        var contact = await _contactService.AddContact(_entry);
+        Assert.NotNull(contact);
+        Assert.True(await _contactService.RemoveContact(contact.Id));
     }
 }

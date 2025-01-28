@@ -25,29 +25,21 @@ public class ContactsController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> AddContact([FromBody] CreateContact data)
     {
-        var id = await _contactService.AddContact(data);
-        return new OkObjectResult(id);
+        var contact = await _contactService.AddContact(data);
+        return contact is null ? new BadRequestResult() : new OkObjectResult(contact);
     }
 
     [HttpPost]
     public async Task<IActionResult> UpdateContact([FromBody] UpdateContact data)
     {
-        var updated = await _contactService.UpdateContact(data);
-
-        if (!updated)
-            return new BadRequestResult();
-
-        return new OkResult();
+        var updatedContact = await _contactService.UpdateContact(data);
+        return updatedContact is null ? new BadRequestResult() : new OkObjectResult(updatedContact);
     }
 
     [HttpDelete]
     public async Task<IActionResult> DeleteContact([FromQuery] Guid id)
     {
         var removed = await _contactService.RemoveContact(id);
-
-        if (!removed)
-            return new BadRequestResult();
-
-        return new OkResult();
+        return removed ? new OkResult() : new BadRequestResult();
     }
 }

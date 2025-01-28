@@ -12,8 +12,19 @@ public class ContactService : RepositoryService
 
     public async Task<List<Contact>> Contacts() => await _dbContext.Contacts.AsNoTracking().ToListAsync();
 
-    public async Task<Guid> AddContact(CreateContact data)
+    public async Task<Contact?> AddContact(CreateContact data)
     {
+        if (string.IsNullOrEmpty(data.Name))
+            return null;
+
+        var existingContact = await _dbContext
+            .Contacts
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => EF.Functions.Like(c.Name, $"%{data.Name}%"));
+
+        if (existingContact is not null)
+            return null;
+
         var contact = new Contact
         {
             Name = data.Name,
@@ -24,19 +35,22 @@ public class ContactService : RepositoryService
         _dbContext.Contacts.Add(contact);
         await _dbContext.SaveChangesAsync();
 
-        return contact.Id;
+        return contact;
     }
 
-    public async Task<bool> UpdateContact(UpdateContact data)
+    public async Task<Contact?> UpdateContact(UpdateContact data)
     {
+        if (string.IsNullOrEmpty(data.Name))
+            return null;
+
         var contact = await _dbContext.Contacts.FindAsync(data.Id);
         if (contact is null)
-            return false;
+            return null;
 
         contact = data.Adapt(contact);
         await _dbContext.SaveChangesAsync();
 
-        return true;
+        return contact;
     }
 
     public async Task<bool> RemoveContact(Guid id)
@@ -49,5 +63,12 @@ public class ContactService : RepositoryService
         await _dbContext.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task RemoveAll()
+    {
+        var items = await _dbContext.Contacts.ToListAsync();
+        _dbContext.Contacts.RemoveRange(items);
+        await _dbContext.SaveChangesAsync();
     }
 }
