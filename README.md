@@ -7,7 +7,7 @@ Minimalistic ASP.NET Vue Web App
 Navigate to server/, open server.sln if you are using Visual Studio.
 Ensure that the app proj. is set as the startup proj.
 
-### Database Migration
+### Database Migration (optional)
 Set the database proj. as the active project, then run Add-Migration XYZ followed by Update-Database in the package console.
 
 ## Front-end
