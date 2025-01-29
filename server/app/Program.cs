@@ -35,13 +35,15 @@ builder.Services.AddTransient<ContactService>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-
 app.UseDefaultFiles();
 app.MapStaticAssets();
+
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapFallbackToFile("/index.html");
 
 app.Run();
