@@ -16,3 +16,6 @@ Navigate to client/
 - Install node.JS > v17.9.1
 - npm install
 - 'npm run dev' or 'npm run build' for prod
+
+# Troubleshooting
+Ensure that the front-end points to the back-end url, open vite.config.js and verify the proxy setting.
