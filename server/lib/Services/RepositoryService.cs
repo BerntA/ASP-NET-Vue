@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib.Services;
 
-public class RepositoryService : IDisposable, IAsyncDisposable
+public abstract class RepositoryService : IDisposable, IAsyncDisposable
 {
     protected readonly ApplicationDbContext _dbContext;
 

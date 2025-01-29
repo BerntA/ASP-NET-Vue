@@ -20,7 +20,7 @@
 
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ props }">
-                <v-btn class="mb-2" color="primary" v-bind="props">
+                <v-btn color="primary" v-bind="props">
                   Add Contact
                 </v-btn>
               </template>
@@ -130,7 +130,7 @@ export default {
     async fetchContactList() {
       this.loading = true
       try {
-        let response = await this.$http('/api/contacts')
+        const response = await this.$http('/api/contacts')
         this.items = response.data
       } catch (e) {
         console.error(e)
@@ -173,7 +173,7 @@ export default {
       })
     },
     async save() {
-      if (this.editedIndex > -1) {
+      if (this.editedIndex > -1) { // update
         await this.$http.post('/api/contacts', { ...this.editedItem, ...{ id: this.items[this.editedIndex].id } })
           .then(response => {
             Object.assign(this.items.find(o => o.id == response.data.id), response.data)
@@ -181,10 +181,10 @@ export default {
           .catch(error => {
             console.error(error)
           })
-      } else {
+      } else { // create/add
         await this.$http.put('/api/contacts', this.editedItem)
-          .then(() => {
-            this.items.push(this.editedItem)
+          .then(response => {
+            this.items.push(response.data)
           })
           .catch(error => {
             console.error(error)
