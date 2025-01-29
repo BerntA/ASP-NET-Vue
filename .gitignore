@@ -51,8 +51,6 @@ tools/7-zip/
 *.vssscc
 .builds
 
-*.db-shm
-*.db-wal
 *.pidb
 
 *.log
