@@ -1,5 +1,5 @@
 # ASP.NET Vue Skeleton
-Minimalistic ASP.NET Vue Web App
+Minimalistic ASP.NET Vue Web App, see [Infestus WebApp](https://github.com/BerntA/InfestusWebApp) for a more in-depth version.
 
 # Building
 
